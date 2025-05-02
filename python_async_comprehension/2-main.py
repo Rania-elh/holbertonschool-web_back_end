@@ -10,5 +10,5 @@ async def main():
     return await(measure_runtime())
 
 print(
-/bin/bash: line 1: q: command not found
+    asyncio.run(main())
 )
