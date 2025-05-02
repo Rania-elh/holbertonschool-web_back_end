@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+"""Module that defines an async generator producing 10 random numbers."""
+
 import asyncio
 import random
 from typing import AsyncGenerator
