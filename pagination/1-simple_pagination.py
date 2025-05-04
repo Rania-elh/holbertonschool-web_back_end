@@ -24,7 +24,7 @@ class Server:
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
         """
         Return a page of the dataset.
-        
+
         Args:
             page (int): The page number, 1-indexed.
             page_size (int): The number of items per page.
