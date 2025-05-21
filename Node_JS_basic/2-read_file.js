@@ -2,24 +2,27 @@ const fs = require('fs');
 
 function countStudents(path) {
   let data;
+
   try {
     data = fs.readFileSync(path, 'utf-8');
-  } catch (err) {
+  } catch (error) {
     throw new Error('Cannot load the database');
   }
 
-  // Découper en lignes et enlever lignes vides (trim en début et fin)
+  // Split by lines, trim to remove trailing newlines, and filter empty lines
   const lines = data.trim().split('\n');
-  // Supprimer la première ligne d'en-tête
+
+  // Remove header
   const students = lines.slice(1).filter(line => line.trim() !== '');
 
   console.log(`Number of students: ${students.length}`);
 
   const fields = {};
 
-  for (const line of students) {
-    const parts = line.split(',');
-    if (parts.length < 4) continue; // ligne malformée ignorée
+  for (const student of students) {
+    const parts = student.split(',');
+
+    if (parts.length < 4) continue; // Ignore malformed lines
 
     const firstName = parts[0].trim();
     const field = parts[3].trim();
@@ -30,7 +33,8 @@ function countStudents(path) {
     fields[field].push(firstName);
   }
 
-  for (const field in fields) {
+  // Print students per field sorted in order of appearance
+  for (const field of Object.keys(fields)) {
     console.log(`Number of students in ${field}: ${fields[field].length}. List: ${fields[field].join(', ')}`);
   }
 }
