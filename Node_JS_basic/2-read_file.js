@@ -1,15 +1,16 @@
 const fs = require('fs');
 
 /**
- * Counts students from a CSV file and prints stats.
- * @param {string} path - The path to the CSV database.
+ * Count students from a CSV file and display statistics.
+ * @param {string} path - The path to the CSV database file.
+ * @throws Will throw an error if the database cannot be loaded.
  */
 function countStudents(path) {
   try {
     const data = fs.readFileSync(path, 'utf8');
     const lines = data.split('\n').filter((line) => line.trim() !== '');
 
-    const students = lines.slice(1); // skip header
+    const students = lines.slice(1); // Remove header line
     console.log(`Number of students: ${students.length}`);
 
     const fields = {};
