@@ -8,18 +8,18 @@ function countStudents(path) {
     throw new Error('Cannot load the database');
   }
 
+  // Découper en lignes et enlever lignes vides (trim en début et fin)
   const lines = data.trim().split('\n');
-
-  // Enlever la ligne d'en-tête
+  // Supprimer la première ligne d'en-tête
   const students = lines.slice(1).filter(line => line.trim() !== '');
 
   console.log(`Number of students: ${students.length}`);
 
   const fields = {};
 
-  students.forEach(line => {
+  for (const line of students) {
     const parts = line.split(',');
-    if (parts.length < 4) return; // ignore malformed lines
+    if (parts.length < 4) continue; // ligne malformée ignorée
 
     const firstName = parts[0].trim();
     const field = parts[3].trim();
@@ -28,7 +28,7 @@ function countStudents(path) {
       fields[field] = [];
     }
     fields[field].push(firstName);
-  });
+  }
 
   for (const field in fields) {
     console.log(`Number of students in ${field}: ${fields[field].length}. List: ${fields[field].join(', ')}`);
