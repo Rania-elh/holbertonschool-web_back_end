@@ -1,16 +1,24 @@
 // Prompt the user with a welcome message
 process.stdout.write('Welcome to Holberton School, what is your name?\n');
 
+// Flag to check if name has been output to avoid multiple outputs
+let nameDisplayed = false;
+
 // Listen for data input from stdin (user input)
 process.stdin.on('data', (data) => {
-  // Convert the input buffer to a string and remove any trailing newline characters
-  const name = data.toString().trim();
-  // Output the user's name
-  process.stdout.write(`Your name is: ${name}\n`);
+  if (!nameDisplayed) {
+    const name = data.toString().trim();
+    process.stdout.write(`Your name is: ${name}\n`);
+    nameDisplayed = true;
+  }
 });
 
-// Listen for the end of the input stream (when user ends the program or pipe finishes)
+// Listen for the end of the input stream (e.g. pipe finished or Ctrl+D)
 process.stdin.on('end', () => {
-  // Notify that the software is closing
   process.stdout.write('This important software is now closing\n');
 });
+
+// If input is from terminal, listen for Ctrl+D (end of input)
+if (process.stdin.isTTY) {
+  process.stdin.resume();
+}
