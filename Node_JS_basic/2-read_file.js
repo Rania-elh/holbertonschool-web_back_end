@@ -5,14 +5,13 @@ function countStudents(path) {
 
   try {
     data = fs.readFileSync(path, 'utf-8');
-  } catch (error) {
+  } catch (err) {
     throw new Error('Cannot load the database');
   }
 
-  // Split by lines, trim to remove trailing newlines, and filter empty lines
   const lines = data.trim().split('\n');
 
-  // Remove header
+  // Enlever la ligne d'entête
   const students = lines.slice(1).filter(line => line.trim() !== '');
 
   console.log(`Number of students: ${students.length}`);
@@ -22,7 +21,7 @@ function countStudents(path) {
   for (const student of students) {
     const parts = student.split(',');
 
-    if (parts.length < 4) continue; // Ignore malformed lines
+    if (parts.length < 4) continue;
 
     const firstName = parts[0].trim();
     const field = parts[3].trim();
@@ -33,10 +32,9 @@ function countStudents(path) {
     fields[field].push(firstName);
   }
 
-  // Print students per field sorted in order of appearance
-  for (const field of Object.keys(fields)) {
+  Object.keys(fields).forEach(field => {
     console.log(`Number of students in ${field}: ${fields[field].length}. List: ${fields[field].join(', ')}`);
-  }
+  });
 }
 
 module.exports = countStudents;
