@@ -1,4 +1,4 @@
-# Node_JS_basic
+# NodeJSbasic
 
 ## Project Overview
 
@@ -26,12 +26,12 @@ In addition, the project emphasizes best development practices like code linting
 
 Make sure you have the following installed:
 
-- Node.js (version 14 or higher recommended)
+	- Node.js (version 14 or higher recommended)
 - npm (comes with Node.js)
 
-Verify installations with:
+	Verify installations with:
 
-```bash
-node -v
-npm -v
+	```bash
+	node -v
+	npm -v
 
