@@ -1,15 +1,11 @@
-const express = require('express'); // import express module (instead of http)
+const express = require('express');
 
-const app = express(); // create express app
-const PORT = 1245; // port number to listen on
-const HOST = 'localhost'; // hostname to listen on
+const app = express();
 
-app.get('/', (_, res) => { // handle GET requests to root path with callback function
-	res.send('Hello Holberton School!');
+app.get('/', (req, res) => {
+  res.send('Hello Holberton School!');
 });
 
-app.listen(PORT, () => { // listen on port and print message to console
-	console.log(`Server listening at http://${HOST}:${PORT}`);
-});
+app.listen(1245);
 
 module.exports = app;
