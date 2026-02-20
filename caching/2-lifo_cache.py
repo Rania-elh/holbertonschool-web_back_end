@@ -7,14 +7,14 @@ from base_caching import BaseCaching
 
 
 class LIFOCache(BaseCaching):
-    """ LIFOCache define a LIFO algorithm to use cache
+    """ LIFOCache define a FIFO algorithm to use cache
 
       To use:
-          >>> my_cache = BasicCache()
+      >>> my_cache = BasicCache()
       >>> my_cache.print_cache()
       Current cache:
 
-          >>> my_cache.put("A", "Hello")
+      >>> my_cache.put("A", "Hello")
       >>> my_cache.print_cache()
       A: Hello
 
@@ -22,7 +22,7 @@ class LIFOCache(BaseCaching):
       Hello
 
       Ex:
-          >>> print(self.cache_data)
+      >>> print(self.cache_data)
       {A: "Hello", B: "World", C: "Holberton", D: "School"}
       >>> my_cache.put("C", "Street")
       >>> print(self.cache_data)
@@ -38,7 +38,6 @@ class LIFOCache(BaseCaching):
         """ Initiliaze
         """
         super().__init__()
-        self.last_key = None
 
     def put(self, key, item):
         """
@@ -48,21 +47,21 @@ class LIFOCache(BaseCaching):
                 key: of the dict
                 item: value of the key
         """
-        if key is not None and item is not None:
+        if key or item is not None:
             valuecache = self.get(key)
             # Make a new
             if valuecache is None:
                 if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-                    if self.last_key is not None:
-                        del self.cache_data[self.last_key]
-                        print("DISCARD: {}".format(self.last_key))
+                    keydel = list(self.cache_data.keys())
+                    lenlast = len(keydel) - 1
+                    del self.cache_data[keydel[lenlast]]
+                    print("DISCARD: {}".format(keydel[lenlast]))
             # If it's None this del the key and after update the same key
             # If it's wrong fix eliminate and ask
-        else:
-            del self.cache_data[key]
+            else:
+                del self.cache_data[key]
             # Modify value
             self.cache_data[key] = item
-            self.last_key = key
 
     def get(self, key):
         """
@@ -74,6 +73,6 @@ class LIFOCache(BaseCaching):
             Return:
                 value of the key
         """
-        if key is None:
-            return None
-        return self.cache_data.get(key)
+
+        valuecache = self.cache_data.get(key)
+        return valuecache
