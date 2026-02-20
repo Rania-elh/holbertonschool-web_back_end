@@ -35,7 +35,7 @@ class BasicCache(BaseCaching):
 
     def get(self, key):
         """
-            modify cache data
+            get cache data
 
             Args:
                 key: of the dict
@@ -43,6 +43,6 @@ class BasicCache(BaseCaching):
             Return:
                 value of the key
         """
-
-        valuecache = self.cache_data.get(key)
-        return valuecache
+        if key is None:
+            return None
+        return self.cache_data.get(key)
