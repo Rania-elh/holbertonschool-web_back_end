@@ -10,18 +10,18 @@ class LRUCache(BaseCaching):
     """ LRUCache define a LRU algorithm to use cache
 
       To use:
-      >>> my_cache = BasicCache()
+          >>> my_cache = BasicCache()
       >>> my_cache.print_cache()
       Current cache:
 
-      >>> my_cache.put("A", "Hello")
+          >>> my_cache.put("A", "Hello")
       >>> my_cache.print_cache()
       A: Hello
 
       Ex:
-      >>> my_cache.print_cache()
+          >>> my_cache.print_cache()
       Current cache:
-      A: Hello
+          A: Hello
       B: World
       C: Holberton
       D: School
@@ -31,7 +31,7 @@ class LRUCache(BaseCaching):
       DISCARD: A
       >>> my_cache.print_cache()
       Current cache:
-      B: World
+          B: World
       C: Holberton
       D: School
       E: Battery

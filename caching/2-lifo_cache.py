@@ -10,11 +10,11 @@ class LIFOCache(BaseCaching):
     """ LIFOCache define a LIFO algorithm to use cache
 
       To use:
-      >>> my_cache = BasicCache()
+          >>> my_cache = BasicCache()
       >>> my_cache.print_cache()
       Current cache:
 
-      >>> my_cache.put("A", "Hello")
+          >>> my_cache.put("A", "Hello")
       >>> my_cache.print_cache()
       A: Hello
 
@@ -22,7 +22,7 @@ class LIFOCache(BaseCaching):
       Hello
 
       Ex:
-      >>> print(self.cache_data)
+          >>> print(self.cache_data)
       {A: "Hello", B: "World", C: "Holberton", D: "School"}
       >>> my_cache.put("C", "Street")
       >>> print(self.cache_data)
@@ -58,8 +58,8 @@ class LIFOCache(BaseCaching):
                         print("DISCARD: {}".format(self.last_key))
             # If it's None this del the key and after update the same key
             # If it's wrong fix eliminate and ask
-            else:
-                del self.cache_data[key]
+        else:
+            del self.cache_data[key]
             # Modify value
             self.cache_data[key] = item
             self.last_key = key

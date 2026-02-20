@@ -10,18 +10,18 @@ class MRUCache(BaseCaching):
     """ MRUCache define MRU algorithm to use cache
 
       To use:
-      >>> my_cache = BasicCache()
+          >>> my_cache = BasicCache()
       >>> my_cache.print_cache()
       Current cache:
 
-      >>> my_cache.put("A", "Hello")
+          >>> my_cache.put("A", "Hello")
       >>> my_cache.print_cache()
       A: Hello
 
       Ex:
-      >>> my_cache.print_cache()
+          >>> my_cache.print_cache()
       Current cache:
-      A: Hello
+          A: Hello
       B: World
       C: Holberton
       D: School
