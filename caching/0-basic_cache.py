@@ -10,11 +10,11 @@ class BasicCache(BaseCaching):
     """ BasicCache define a intro to use cache
 
       To use:
-      >>> my_cache = BasicCache()
+          >>> my_cache = BasicCache()
       >>> my_cache.print_cache()
       Current cache:
 
-      >>> my_cache.put("A", "Hello")
+          >>> my_cache.put("A", "Hello")
       >>> my_cache.print_cache()
       A: Hello
 
