@@ -1,7 +1,4 @@
 #!/usr/bin/env python3
-"""
-Main file
-"""
 
 filter_datum = __import__('filtered_logger').filter_datum
 
@@ -11,10 +8,6 @@ messages = ["name=egg;email=eggmin@eggsample.com;password=eggcellent;date_of_bir
 for message in messages:
     print(filter_datum(fields, 'xxx', message, ';'))
 
-#!/usr/bin/env python3
-"""
-Main file
-"""
 
 import logging
 import re
@@ -26,11 +19,6 @@ log_record = logging.LogRecord("my_logger", logging.INFO, None, None, message, N
 formatter = RedactingFormatter(fields=("email", "ssn", "password"))
 print(formatter.format(log_record))
 
-#!/usr/bin/env python3
-"""
-Main file
-"""
-
 import logging
 
 get_logger = __import__('filtered_logger').get_logger
@@ -38,11 +26,6 @@ PII_FIELDS = __import__('filtered_logger').PII_FIELDS
 
 print(get_logger.__annotations__.get('return'))
 print("PII_FIELDS: {}".format(len(PII_FIELDS)))
-
-#!/usr/bin/env python3
-"""
-Main file
-"""
 
 get_db = __import__('filtered_logger').get_db
 
@@ -54,21 +37,12 @@ for row in cursor:
 cursor.close()
 db.close()
 
-#!/usr/bin/env python3
-"""
-Main file
-"""
 
 hash_password = __import__('encrypt_password').hash_password
 
 password = "MyAmazingPassw0rd"
 print(hash_password(password))
 print(hash_password(password))
-
-#!/usr/bin/env python3
-"""
-Main file
-"""
 
 hash_password = __import__('encrypt_password').hash_password
 is_valid = __import__('encrypt_password').is_valid
