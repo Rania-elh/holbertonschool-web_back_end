@@ -1,0 +1,16 @@
+{
+  "debad416-a0a6-49b8-91ea-62f9dba97e48": {
+    "id": "debad416-a0a6-49b8-91ea-62f9dba97e48",
+    "email": "98158d45-e816-4b35-8051-713ff3ca0582",
+    "password": "14bd32e7-9662-4de1-95e9-06a8c770d8f3",
+    "first_name": "Bob",
+    "last_name": "Dylan"
+  },
+  "b552ee18-13f2-45c1-be83-31d1c9e3a8c3": {
+    "id": "b552ee18-13f2-45c1-be83-31d1c9e3a8c3",
+    "email": "bob@hbtn.io",
+    "password": "H0lbertonSchool98!",
+    "first_name": "",
+    "last_name": ""
+  }
+}
