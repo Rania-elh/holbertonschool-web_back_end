@@ -28,7 +28,7 @@ class RedactingFormatter(logging.Formatter):
         message = super().format(record)
         for field in self.fields:
             message = filter_datum([field], self.REDACTION, message,
-                    self.SEPARATOR)
+                                   self.SEPARATOR)
         return message
 
 
