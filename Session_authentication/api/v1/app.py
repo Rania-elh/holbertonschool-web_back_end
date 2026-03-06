@@ -29,9 +29,10 @@ elif auth_type:
 
 @app.before_request
 def before_request_func():
-    """ Function that filter each request."""
+    """Function that filter each request."""
     if auth is None:
         return
+    request.current_user = None
 
     exempt_paths = ['/api/v1/status/', '/api/v1/unauthorized/',
                     '/api/v1/forbidden/', '/api/v1/auth_session/login/']
