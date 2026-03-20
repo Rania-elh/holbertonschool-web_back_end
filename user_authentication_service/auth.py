@@ -5,6 +5,7 @@ import uuid
 from sqlalchemy.orm.exc import NoResultFound
 
 from db import DB
+from user import User
 
 
 def _hash_password(password: str) -> bytes:
@@ -18,21 +19,26 @@ def _generate_uuid() -> str:
 
 
 class Auth:
-    """Auth class to interact with the authentication database."""
+    """Auth class to interact with the authentication database.
+    """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._db = DB()
 
-    def register_user(self, email: str, password: str):
+    def register_user(self, email: str, password: str) -> User:
         """Create a new user or raise ValueError if email already exists."""
         try:
             self._db.find_user_by(email=email)
         except NoResultFound:
             pass
         else:
-            raise ValueError("User {} already exists".format(email))
+            raise ValueError(
+                "User {} already exists".format(email)
+            )
         hashed = _hash_password(password)
-        return self._db.add_user(email, hashed.decode("utf-8"))
+        return self._db.add_user(
+            email, hashed_password=hashed.decode("utf-8")
+        )
 
     def valid_login(self, email: str, password: str) -> bool:
         """Return True if email exists and password matches the stored hash."""
@@ -46,7 +52,7 @@ class Auth:
         )
 
     def create_session(self, email: str):
-        """Create a session UUID for the user and persist it; return session id or None."""
+        """Create session UUID, persist it, return id or None."""
         try:
             user = self._db.find_user_by(email=email)
         except NoResultFound:
@@ -69,7 +75,7 @@ class Auth:
         self._db.update_user(user_id, session_id=None)
 
     def get_reset_password_token(self, email: str) -> str:
-        """Generate a reset token for the user and persist it; return the token."""
+        """Generate a reset token for the user; persist and return it."""
         try:
             user = self._db.find_user_by(email=email)
         except NoResultFound:
