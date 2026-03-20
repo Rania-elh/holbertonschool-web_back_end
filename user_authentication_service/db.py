@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """DB module
 """
-from sqlalchemy import create_engine, select
+from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
@@ -41,12 +41,10 @@ class DB:
     def find_user_by(self, **kwargs) -> User:
         """Return the first User row matching the given column filters.
 
-        Raises NoResultFound when no row matches.
-        Raises InvalidRequestError for invalid column names.
+        Raises sqlalchemy.orm.exc.NoResultFound when no row matches.
+        Raises sqlalchemy.exc.InvalidRequestError for invalid columns.
         """
-        return self._session.execute(
-            select(User).filter_by(**kwargs)
-        ).scalar_one()
+        return self._session.query(User).filter_by(**kwargs).one()
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """Update user columns by id, then commit.
