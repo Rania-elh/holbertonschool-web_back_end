@@ -2,6 +2,7 @@
 """DB module
 """
 from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 
@@ -42,7 +43,7 @@ class DB:
         return self._session.query(User).filter_by(**kwargs).one()
 
     def update_user(self, user_id: int, **kwargs) -> None:
-        """Update user columns by id. Raises ValueError for unknown attributes."""
+        """Update user columns by id; ValueError if unknown attribute."""
         valid_columns = {c.key for c in User.__table__.columns}
         for key in kwargs:
             if key not in valid_columns:
