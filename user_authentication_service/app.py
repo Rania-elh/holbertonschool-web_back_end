@@ -52,19 +52,20 @@ def login():
 
 @app.route("/sessions", methods=["DELETE"], strict_slashes=False)
 def logout():
-    """DELETE /sessions: session_id cookie, destroy session, redirect GET /.
+    """DELETE /sessions: session_id cookie; destroy session or 403.
 
-    No matching user: flask.abort(403). Else AUTH.destroy_session, redirect
-    to /, delete session_id cookie.
+    Read session_id from cookies, find user via AUTH.get_user_from_session_id.
+    If no user: flask.abort(403). Else AUTH.destroy_session, redirect to GET
+    / with status 302 and clear the session_id cookie.
     """
     session_id = request.cookies.get("session_id")
-    user = AUTH.get_user_from_session_id(session_id)
+    user = AUTH.get_user_from_session_id(session_id=session_id)
     if user is None:
         flask.abort(403)
     AUTH.destroy_session(user_id=user.id)
-    response = redirect("/")
+    response = redirect("/", code=302)
     response.delete_cookie("session_id", path="/")
-    return response
+    return response, 302
 
 
 @app.route("/profile", methods=["GET"], strict_slashes=False)
@@ -86,15 +87,14 @@ def profile():
 def get_reset_password_token():
     """POST /reset_password: form field email.
 
-    Unknown email: flask.abort(403). Else 200 and JSON email (from DB),
-    reset_token from AUTH.get_reset_password_token.
+    Unknown email: flask.abort(403). Else 200 and JSON email, reset_token.
     """
     email = request.form.get("email")
     try:
-        reset_token, user_email = AUTH.get_reset_password_token(email=email)
+        reset_token = AUTH.get_reset_password_token(email=email)
     except ValueError:
         flask.abort(403)
-    body = jsonify({"email": user_email, "reset_token": reset_token})
+    body = jsonify({"email": email, "reset_token": reset_token})
     return body, 200
 
 
@@ -102,21 +102,19 @@ def get_reset_password_token():
 def update_password():
     """PUT /reset_password: form fields email, reset_token, new_password.
 
-    Invalid token: ValueError -> flask.abort(403). Success: 200 JSON with
-    email from DB and message "Password updated".
+    On ValueError (invalid token): flask.abort(403). Else 200 and JSON with
+    the submitted email and message "Password updated".
     """
     email = request.form.get("email")
     reset_token = request.form.get("reset_token")
     new_password = request.form.get("new_password")
     try:
-        user_email = AUTH.update_password(
-            reset_token=reset_token,
-            password=new_password,
-        )
+        AUTH.update_password(reset_token, new_password)
     except ValueError:
         flask.abort(403)
-    body = jsonify({"email": user_email, "message": "Password updated"})
-    return body, 200
+    return jsonify(
+        {"email": email, "message": "Password updated"}
+    ), 200
 
 
 if __name__ == "__main__":

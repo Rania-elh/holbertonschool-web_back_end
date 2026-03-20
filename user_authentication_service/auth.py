@@ -2,7 +2,7 @@
 """Authentication helpers
 """
 import uuid
-from typing import Optional, Tuple
+from typing import Optional
 
 import bcrypt
 from sqlalchemy.exc import NoResultFound
@@ -106,11 +106,11 @@ class Auth:
         self._db.update_user(user_id=user_id, session_id=None)
         return None
 
-    def get_reset_password_token(self, email: str) -> Tuple[str, str]:
-        """Find user by email; set reset_token to a new UUID.
+    def get_reset_password_token(self, email: str) -> str:
+        """Find user by email; set reset_token to a new UUID; return token str.
 
-        If no user matches the email, raise ValueError. Returns the token
-        string and the user's email from the database (same order as stored).
+        If no user matches the email, raise ValueError. Uses _generate_uuid and
+        self._db.find_user_by / self._db.update_user.
         """
         try:
             user = self._db.find_user_by(email=email)
@@ -120,14 +120,14 @@ class Auth:
             )
         token = _generate_uuid()
         self._db.update_user(user_id=user.id, reset_token=token)
-        return token, user.email
+        return token
 
-    def update_password(self, reset_token: str, password: str) -> str:
+    def update_password(self, reset_token: str, password: str) -> None:
         """Find user by reset_token; set hashed_password and reset_token=None.
 
         If no user matches the token, raise ValueError. Otherwise hash the
         password with _hash_password and persist via self._db.update_user.
-        Returns the user's email from the database (for API responses).
+        Returns None.
         """
         try:
             user = self._db.find_user_by(reset_token=reset_token)
@@ -141,4 +141,4 @@ class Auth:
             hashed_password=hashed.decode("utf-8"),
             reset_token=None,
         )
-        return user.email
+        return None
