@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """DB module
 """
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, select
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
@@ -39,15 +39,24 @@ class DB:
         return user
 
     def find_user_by(self, **kwargs) -> User:
-        """Return the first User row matching the given column filters."""
-        return self._session.query(User).filter_by(**kwargs).one()
+        """Return the first User row matching the given column filters.
+
+        Raises NoResultFound when no row matches.
+        Raises InvalidRequestError for invalid column names.
+        """
+        return self._session.execute(
+            select(User).filter_by(**kwargs)
+        ).scalar_one()
 
     def update_user(self, user_id: int, **kwargs) -> None:
-        """Update user columns by id; ValueError if unknown attribute."""
+        """Update user columns by id, then commit.
+
+        Raises ValueError if kwargs contains an unknown column name.
+        """
         valid_columns = {c.key for c in User.__table__.columns}
         for key in kwargs:
             if key not in valid_columns:
-                raise ValueError
+                raise ValueError()
         user = self.find_user_by(id=user_id)
         for key, value in kwargs.items():
             setattr(user, key, value)
