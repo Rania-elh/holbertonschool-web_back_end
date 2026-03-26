@@ -15,15 +15,22 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": {"b": 2}}, ("a",), {"b": 2}),
         ({"a": {"b": 2}}, ("a", "b"), 2),
     ])
-    def test_access_nested_map(self, nested_map, path, expected):
+    def test_access_nested_map(
+        self, nested_map, path, expected
+    ):
         """Test that access_nested_map returns expected result."""
-        self.assertEqual(access_nested_map(nested_map, path), expected)
+        self.assertEqual(
+            access_nested_map(nested_map, path),
+            expected
+        )
 
     @parameterized.expand([
         ({}, ("a",)),
         ({"a": 1}, ("a", "b")),
     ])
-    def test_access_nested_map_exception(self, nested_map, path):
+    def test_access_nested_map_exception(
+        self, nested_map, path
+    ):
         """Test that access_nested_map raises KeyError."""
         with self.assertRaises(KeyError) as cm:
             access_nested_map(nested_map, path)
@@ -68,7 +75,9 @@ class TestMemoize(unittest.TestCase):
                 """Return memoized value."""
                 return self.a_method()
 
-        with patch.object(TestClass, "a_method", return_value=42) as mock_method:
+        with patch.object(
+            TestClass, "a_method", return_value=42
+        ) as mock_method:
             obj = TestClass()
             result1 = obj.a_property
             result2 = obj.a_property
