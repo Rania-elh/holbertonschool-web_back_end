@@ -27,24 +27,24 @@ app.config.from_object(Config)
 def get_user():
     """Return user dictionary or None"""
     login_as = request.args.get('login_as')
-    if login_as:
-        try:
-            return users.get(int(login_as))
-        except (ValueError, TypeError):
-            return None
-    return None
+    if login_as is None:
+        return None
+    try:
+        return users.get(int(login_as))
+    except (ValueError, TypeError):
+        return None
 
 
 @app.before_request
 def before_request():
-    """Find user and store it in flask.g.user"""
+    """Set user in global request context"""
     g.user = get_user()
 
 
 def get_locale():
-    """Get locale from URL parameter or request headers"""
+    """Get locale from URL parameter or request header"""
     locale = request.args.get('locale')
-    if locale in app.config['LANGUAGES']:
+    if locale and locale in app.config['LANGUAGES']:
         return locale
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
