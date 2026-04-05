@@ -1,17 +1,11 @@
--- Integer division with zero-safe result (float)
+-- Safe divide
 DROP FUNCTION IF EXISTS SafeDiv;
-
 DELIMITER $$
 
 CREATE FUNCTION SafeDiv(a INT, b INT)
 RETURNS FLOAT
 DETERMINISTIC
 NO SQL
-BEGIN
-    IF b = 0 THEN
-        RETURN 0;
-    END IF;
-    RETURN a / b;
-END$$
+RETURN IF(b = 0, 0, a / b)$$
 
 DELIMITER ;

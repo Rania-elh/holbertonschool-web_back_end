@@ -7,7 +7,9 @@ from typing import Any, Callable, Optional, Union
 
 
 def count_calls(method: Callable[..., Any]) -> Callable[..., Any]:
-    """Increment a Redis counter keyed by the method's qualified name on each call."""
+    """Increment a Redis counter keyed by the method's qualified name on
+    each call.
+    """
     qn = method.__qualname__
 
     @wraps(method)
@@ -19,7 +21,9 @@ def count_calls(method: Callable[..., Any]) -> Callable[..., Any]:
 
 
 def call_history(method: Callable[..., Any]) -> Callable[..., Any]:
-    """Append each call's args and return value to Redis lists keyed by qualname."""
+    """Append each call's args and return value to Redis lists keyed by
+    qualname.
+    """
     qn = method.__qualname__
 
     @wraps(method)
@@ -73,4 +77,6 @@ def replay(method: Callable[..., Any]) -> None:
     outputs = r.lrange(f"{qn}:outputs", 0, -1)
     print(f"{qn} was called {len(inputs)} times:")
     for inp, out in zip(inputs, outputs):
-        print(f"{qn}(*{inp.decode('utf-8')}) -> {out.decode('utf-8')}")
+        sin = inp.decode("utf-8")
+        sout = out.decode("utf-8")
+        print(f"{qn}(*{sin}) -> {sout}")

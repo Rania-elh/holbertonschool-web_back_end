@@ -1,4 +1,4 @@
--- Total fans per country (sum of per-band fan counts), ranked descending
+-- Best band ever!
 SELECT origin, SUM(fans) AS nb_fans
 FROM metal_bands
 GROUP BY origin

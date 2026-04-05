@@ -1,7 +1,7 @@
--- Reset valid_email when the email address is updated to a new value
+-- Email validation to sent
 DELIMITER $$
 
-CREATE TRIGGER reset_valid_email_on_email_update
+CREATE TRIGGER reset_valid_email
 BEFORE UPDATE ON users
 FOR EACH ROW
 BEGIN

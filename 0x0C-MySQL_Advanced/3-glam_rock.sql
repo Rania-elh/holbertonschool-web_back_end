@@ -1,3 +1,4 @@
+-- Old school band
 SELECT
     band_name,
     IFNULL(split, 2024) - formed AS lifespan

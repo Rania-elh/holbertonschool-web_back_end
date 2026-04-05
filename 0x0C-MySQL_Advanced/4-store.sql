@@ -1,11 +1,5 @@
--- Decrease item stock when a row is inserted into orders
-DELIMITER $$
-
-CREATE TRIGGER decrease_items_quantity_after_order
+-- Buy buy buy
+CREATE TRIGGER decrease_quantity
 AFTER INSERT ON orders
 FOR EACH ROW
-BEGIN
-    UPDATE items SET quantity = quantity - NEW.number WHERE name = NEW.item_name;
-END$$
-
-DELIMITER ;
+UPDATE items SET quantity = quantity - NEW.number WHERE name = NEW.item_name;

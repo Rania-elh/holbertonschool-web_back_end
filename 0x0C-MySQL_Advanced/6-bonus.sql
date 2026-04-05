@@ -1,20 +1,24 @@
--- Stored procedure: insert correction, create project if missing
+-- Add bonus
 DROP PROCEDURE IF EXISTS AddBonus;
-
 DELIMITER $$
 
-CREATE PROCEDURE AddBonus(IN user_id INT, IN project_name VARCHAR(255), IN score INT)
+CREATE PROCEDURE AddBonus(
+    IN user_id INT,
+    IN project_name VARCHAR(255),
+    IN score INT
+)
 BEGIN
-    DECLARE proj_id INT DEFAULT NULL;
-
-    SELECT id INTO proj_id FROM projects WHERE name = project_name LIMIT 1;
-
-    IF proj_id IS NULL THEN
-        INSERT INTO projects (name) VALUES (project_name);
-        SET proj_id = LAST_INSERT_ID();
-    END IF;
-
-    INSERT INTO corrections (user_id, project_id, score) VALUES (user_id, proj_id, score);
+    INSERT INTO projects (name)
+    SELECT project_name FROM DUAL
+    WHERE NOT EXISTS (
+        SELECT 1 FROM projects WHERE name = project_name LIMIT 1
+    );
+    INSERT INTO corrections (user_id, project_id, score)
+    VALUES (
+        user_id,
+        (SELECT id FROM projects WHERE name = project_name LIMIT 1),
+        score
+    );
 END$$
 
 DELIMITER ;
