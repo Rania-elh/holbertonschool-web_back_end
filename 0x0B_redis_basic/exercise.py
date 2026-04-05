@@ -8,10 +8,11 @@ from typing import Any, Callable, Optional, Union
 
 def count_calls(method: Callable[..., Any]) -> Callable[..., Any]:
     """Increment a Redis counter keyed by the method's qualified name on each call."""
+    qn = method.__qualname__
 
     @wraps(method)
     def wrapper(self: Any, *args: Any, **kwargs: Any) -> Any:
-        self._redis.incr(method.__qualname__)
+        self._redis.incr(qn)
         return method(self, *args, **kwargs)
 
     return wrapper
@@ -19,10 +20,10 @@ def count_calls(method: Callable[..., Any]) -> Callable[..., Any]:
 
 def call_history(method: Callable[..., Any]) -> Callable[..., Any]:
     """Append each call's args and return value to Redis lists keyed by qualname."""
+    qn = method.__qualname__
 
     @wraps(method)
     def wrapper(self: Any, *args: Any, **kwargs: Any) -> Any:
-        qn = method.__qualname__
         self._redis.rpush(f"{qn}:inputs", str(args))
         output = method(self, *args, **kwargs)
         self._redis.rpush(f"{qn}:outputs", output)
